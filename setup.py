@@ -79,5 +79,9 @@ setup(
     packages=[SKILL_PKG],
     include_package_data=True,
     keywords='hivmemind voice relay led',
-    #entry_points={'ovos.plugin.skill': PLUGIN_ENTRY_POINT}
+    entry_points={
+        'console_scripts': [
+            'hivemind-voice-relay-led=hivemind_voice_relay_led.__main__:main'
+        ]
+    }
 )
