@@ -76,7 +76,7 @@ setup(
     license='Apache-2.0',
     package_dir={SKILL_PKG: ""},
     package_data={SKILL_PKG: find_resource_files()},
-    packages=find_packages, # [SKILL_PKG],
+    packages=find_packages(), # [SKILL_PKG],
     include_package_data=False,
     keywords='hivmemind voice relay led',
     entry_points={
