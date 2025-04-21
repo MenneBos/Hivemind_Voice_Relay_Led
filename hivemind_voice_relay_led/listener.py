@@ -1,52 +1,49 @@
-import atexit
 import RPi.GPIO as GPIO
-from ovos_utils.log import LOG  # OVOS logging importeren
-from hivemind_voice_relay.service import get_bus
-from ovos_bus_client.message import Message
+from ovos_simple_listener import ListenerCallbacks
+from ovos_utils.log import LOG
+import time
 
-LED_PIN = 17 
-
-# Setup GPIO
-GPIO.setmode(GPIO.BCM)   #zorgt voor Broadcom nummer dus GPIO 17
+# Stel GPIO in
+LED_PIN = 17  # Verander dit naar de juiste GPIO pin
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(LED_PIN, GPIO.OUT)
-GPIO.output(LED_PIN, GPIO.LOW)  # Zorg dat LED uit is bij start
 
-# Cleanup-functie voor veilig afsluiten
-def cleanup():
-    GPIO.output(LED_PIN, GPIO.LOW)  # Zet LED uit
-    GPIO.cleanup()                  # Geef alle GPIO-pinnen vrij
+# Callback implementatie voor de listener
+class MyCallbacks(ListenerCallbacks):
+    @classmethod
+    def listen_callback(cls):
+        # Deze callback wordt aangeroepen wanneer de listener start
+        LOG.info("Listener gestart!")
+        GPIO.output(LED_PIN, GPIO.HIGH)  # Zet de LED aan
+        LOG.info("LED aan")
 
-# Registreer cleanup-functie
-atexit.register(cleanup)
+    @classmethod
+    def end_listen_callback(cls):
+        # Deze callback wordt aangeroepen wanneer de listener stopt
+        LOG.info("Listener gestopt!")
+        GPIO.output(LED_PIN, GPIO.LOW)  # Zet de LED uit
+        LOG.info("LED uit")
 
-# Functie om logberichten te geven wanneer bus goed werkt
-def bus_ready_callback(message: Message):
-    # Hier is 'message' het bericht dat de bus verstuurt naar deze callback
-    LOG.info("HiveMind bus succesvol verbonden en werkt!")
+    @classmethod
+    def audio_callback(cls, audio):
+        # Deze callback wordt aangeroepen wanneer audio wordt verwerkt
+        LOG.info("Audio ontvangen voor verwerking")
 
-def on_start_listening(message: Message):
-    # 'message' bevat de informatie die door de bus wordt verstuurd
-    LOG.info("Bericht ontvangen: recognizer_loop:record_begin")
-    GPIO.output(LED_PIN, GPIO.HIGH)  # LED aan
+    @classmethod
+    def error_callback(cls, audio):
+        # Deze callback wordt aangeroepen bij een fout tijdens STT (Speech To Text)
+        LOG.error("Fout bij STT verwerking")
 
-def on_end_listening(message: Message):
-    # 'message' bevat de informatie die door de bus wordt verstuurd
-    LOG.info("Bericht ontvangen: recognizer_loop:record_end")
-    GPIO.output(LED_PIN, GPIO.LOW)   # LED uit
+    @classmethod
+    def text_callback(cls, utterance, lang):
+        # Deze callback wordt aangeroepen wanneer tekst wordt herkend
+        LOG.info(f"Herkenning van tekst: {utterance}")
 
-# Als script direct wordt uitgevoerd, start de bus en luister naar berichten
+# Start de listener (voorbeeld)
 def main():
-    try:
-        bus = get_bus()  # Haalt de HiveMessageBusClient op via de get_bus functie
-        bus.on("recognizer_loop:record_begin", on_start_listening)
-        bus.on("recognizer_loop:record_end", on_end_listening)
-        bus.on("hivemind_bus:ready", bus_ready_callback)  # Bus is klaar
+    from ovos_simple_listener import SimpleListener
+    listener = SimpleListener(callbacks=MyCallbacks)
+    listener.start()
 
-        LOG.info("Verbinding met de HiveMind bus is succesvol!")
-        bus.run_forever()
-
-    except Exception as e:
-        LOG.error(f"Fout bij verbinden met de HiveMind bus: {e}")
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
