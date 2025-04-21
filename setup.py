@@ -37,7 +37,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'hivemind-voice-relay-led = hivemind_voice_relay_led.__main__:main',  # Dit maakt de CLI beschikbaar
+            'hivemind-voice-relay-led = hivemind_voice_relay_led.__main__:run',  # Dit maakt de CLI beschikbaar
         ]
     },
     include_package_data=True,  # Zorg ervoor dat alle nodige bestanden worden meegenomen

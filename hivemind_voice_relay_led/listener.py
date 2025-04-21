@@ -35,7 +35,7 @@ def on_end_listening(message: Message):
     GPIO.output(LED_PIN, GPIO.LOW)   # LED uit
 
 # Als script direct wordt uitgevoerd, start de bus en luister naar berichten
-if main():
+def main():
     try:
         bus = get_bus()  # Haalt de HiveMessageBusClient op via de get_bus functie
         bus.on("recognizer_loop:record_begin", on_start_listening)
@@ -47,3 +47,6 @@ if main():
 
     except Exception as e:
         LOG.error(f"Fout bij verbinden met de HiveMind bus: {e}")
+
+if __name__ == "__main__":
+    main()
