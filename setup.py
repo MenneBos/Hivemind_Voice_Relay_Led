@@ -1,9 +1,19 @@
+#!/usr/bin/env python3
 import os
-
 from setuptools import setup
+from os import walk, path
+from os.path import join, dirname
+# from setuptools import setup, find_packages
 
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
+URL = "https://github.com/MenneBos/Hivemind_Voice_Relay_Led.git"
+SKILL_CLAZZ = "led_listerner"  # needs to match __init__.py class name
+PYPI_NAME = "Hivemind-Voice-Relay-Led"  # pip install PYPI_NAME
 
+# below derived from github url to ensure standard skill_id
+SKILL_AUTHOR, SKILL_NAME = URL.split(".com/")[-1].split("/")
+SKILL_PKG = SKILL_NAME.lower().replace('-', '_')
+PLUGIN_ENTRY_POINT = f'{SKILL_NAME.lower()}.{SKILL_AUTHOR.lower()}={SKILL_PKG}:{SKILL_CLAZZ}'
+# skill_id=package_name:SkillClass
 
 def get_version():
     """ Find the version of the package"""
@@ -29,7 +39,6 @@ def get_version():
         version += f"a{alpha}"
     return version
 
-
 def required(requirements_file):
     """ Read requirements file and remove comments and empty lines. """
     with open(os.path.join(BASEDIR, requirements_file), 'r') as f:
@@ -40,21 +49,36 @@ def required(requirements_file):
         return [pkg for pkg in requirements
                 if pkg.strip() and not pkg.startswith("#")]
 
+def find_resource_files():
+    resource_base_dirs = ("locale", "ui", "vocab", "intent", "dialog", "regex", "skill")
+    base_dir = path.dirname(__file__)
+    package_data = ["*.json"]
+    for res in resource_base_dirs:
+        if path.isdir(path.join(base_dir, res)):
+            for (directory, _, files) in walk(path.join(base_dir, res)):
+                if files:
+                    package_data.append(
+                        path.join(directory.replace(base_dir, "").lstrip('/'),
+                                  '*'))
+    return package_data
+
+with open(path.join(path.abspath(path.dirname(__file__)), "README.md"), "r") as f:
+    long_description = f.read()
+
 
 setup(
-    name='HiveMind-voice-relay-led',
+    name=PYPI_NAME,
     version=get_version(),
-    packages=['hivemind_voice_relay_led'],
-    install_requires=required("requirements.txt"),
+    long_description=long_description,
+    url=URL,
+    author=SKILL_AUTHOR,
+    description='A skill to switch Len on off when listering',
+    author_email='your.email@example.com',
+    license='Apache-2.0',
+    package_dir={SKILL_PKG: ""},
+    package_data={SKILL_PKG: find_resource_files()},
+    packages=[SKILL_PKG],
     include_package_data=True,
-    url='https://github.com/MenneBos/Hivemind_Voice_Relay_Led.git',
-    license='Apache2',
-    author='MenneBos',
-    author_email='',
-    description='Hivemind Voice Relay with Led during listening',
-    entry_points={
-        'console_scripts': [
-            'hivemind-voice-relay=hivemind_voice_relay.__main__:connect'
-        ]
-    }
+    keywords='hivmemind voice relay led',
+    #entry_points={'ovos.plugin.skill': PLUGIN_ENTRY_POINT}
 )
