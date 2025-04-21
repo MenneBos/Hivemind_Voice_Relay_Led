@@ -1,3 +1,4 @@
 RPi.GPIO>=0.7.0,<1.0.0
 hivemind_voice_relay
 ovos-bus-client
+ovos_utils.log
