@@ -8,7 +8,6 @@ setup(
         'ovos-bus-client',  # Vereiste dependencies
         'RPi.GPIO',
         'ovos-utils',
-        'hivemind-client',  # Indien nodig
     ],
     entry_points={
         'console_scripts': [
