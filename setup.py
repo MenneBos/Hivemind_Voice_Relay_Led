@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 from os import walk, path
 from os.path import join, dirname
 # from setuptools import setup, find_packages
 
 URL = "https://github.com/MenneBos/Hivemind_Voice_Relay_Led"
 SKILL_CLAZZ = "led_listerner"  # needs to match __init__.py class name
-PYPI_NAME = "hivemind-voice-relay-led"  # pip install PYPI_NAME
+PYPI_NAME = "Hivemind-Voice-Relay-Led"  # pip install PYPI_NAME
 
 # below derived from github url to ensure standard skill_id
 SKILL_AUTHOR, SKILL_NAME = URL.split(".com/")[-1].split("/")
@@ -76,8 +76,9 @@ setup(
     license='Apache-2.0',
     package_dir={SKILL_PKG: ""},
     package_data={SKILL_PKG: find_resource_files()},
-    packages=[SKILL_PKG],
-    include_package_data=True,
+    packages=find_packages, # [SKILL_PKG],
+    install_requires=required('requirements.txt'), 
+    include_package_data=False,
     keywords='hivmemind voice relay led',
     entry_points={
         'console_scripts': [
