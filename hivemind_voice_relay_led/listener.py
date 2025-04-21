@@ -40,10 +40,18 @@ class MyCallbacks(ListenerCallbacks):
         LOG.info(f"Herkenning van tekst: {utterance}")
 
 # Start de listener (voorbeeld)
-def main():
+def start_listener():
     from ovos_simple_listener import SimpleListener
     listener = SimpleListener(callbacks=MyCallbacks)
     listener.start()
 
-if __name__ == '__main__':
-    main()
+    try:
+        LOG.info("Listener draait, druk Ctrl+C om te stoppen.")
+        listener.join()  # Houd de main thread actief zolang de listener draait
+    except KeyboardInterrupt:
+        LOG.info("Listener gestopt door gebruiker")
+    finally:
+        GPIO.cleanup()
+
+if __name__ == "__main__":
+    start_listener()

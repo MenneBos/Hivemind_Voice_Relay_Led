@@ -1,4 +1,4 @@
-from hivemind_voice_relay_led.listener import main
+from hivemind_voice_relay_led.listener import start_listener
 
 def run():
-    main()
+    start_listener()
