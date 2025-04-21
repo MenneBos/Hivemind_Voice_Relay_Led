@@ -2,14 +2,10 @@ from setuptools import setup, find_packages
 import os
 from os import walk, path
 from os.path import join, dirname
-from pathlib import Path
-
-version_ns = {}
-exec(Path("version.py").read_text(), version_ns)
 
 setup(
     name='hivemind_voice_relay_led',
-    version=version_ns["__version__"],
+    version='1.0.1',
     packages=find_packages(),  # Dit zoekt naar alle pakketten in de huidige map
     install_requires=[
         'ovos-bus-client',  # Vereiste dependencies
