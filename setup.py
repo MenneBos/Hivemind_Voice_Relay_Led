@@ -5,7 +5,7 @@ from os import walk, path
 from os.path import join, dirname
 # from setuptools import setup, find_packages
 
-URL = "https://github.com/MenneBos/Hivemind_Voice_Relay_Led.git"
+URL = "https://github.com/MenneBos/Hivemind_Voice_Relay_Led"
 SKILL_CLAZZ = "led_listerner"  # needs to match __init__.py class name
 PYPI_NAME = "Hivemind-Voice-Relay-Led"  # pip install PYPI_NAME
 
