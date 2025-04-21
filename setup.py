@@ -7,7 +7,7 @@ from os.path import join, dirname
 
 URL = "https://github.com/MenneBos/Hivemind_Voice_Relay_Led"
 SKILL_CLAZZ = "led_listerner"  # needs to match __init__.py class name
-PYPI_NAME = "hivemind-voice-relay-Led"  # pip install PYPI_NAME
+PYPI_NAME = "hivemind-voice-relay-led"  # pip install PYPI_NAME
 
 # below derived from github url to ensure standard skill_id
 SKILL_AUTHOR, SKILL_NAME = URL.split(".com/")[-1].split("/")
