@@ -16,9 +16,8 @@ PLUGIN_ENTRY_POINT = f'{SKILL_NAME.lower()}.{SKILL_AUTHOR.lower()}={SKILL_PKG}:{
 # skill_id=package_name:SkillClass
 
 def get_version():
-    """ Find the version of the package"""
-    version = None
-    version_file = os.path.join(BASEDIR, 'led_listener', 'version.py')
+    """ Find the version of this skill"""
+    version_file = os.path.join(os.path.dirname(__file__), 'version.py')
     major, minor, build, alpha = (None, None, None, None)
     with open(version_file) as f:
         for line in f:
@@ -35,7 +34,7 @@ def get_version():
                     '# END_VERSION_BLOCK' in line):
                 break
     version = f"{major}.{minor}.{build}"
-    if int(alpha) > 0:
+    if int(alpha):
         version += f"a{alpha}"
     return version
 
