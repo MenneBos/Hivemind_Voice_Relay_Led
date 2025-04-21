@@ -12,12 +12,12 @@ PYPI_NAME = "Hivemind-Voice-Relay-Led"  # pip install PYPI_NAME
 # below derived from github url to ensure standard skill_id
 SKILL_AUTHOR, SKILL_NAME = URL.split(".com/")[-1].split("/")
 SKILL_PKG = SKILL_NAME.lower().replace('-', '_')
-PLUGIN_ENTRY_POINT = f'{SKILL_NAME.lower()}.{SKILL_AUTHOR.lower()}={SKILL_PKG}:{SKILL_CLAZZ}'
+# PLUGIN_ENTRY_POINT = f'{SKILL_NAME.lower()}.{SKILL_AUTHOR.lower()}={SKILL_PKG}:{SKILL_CLAZZ}'
 # skill_id=package_name:SkillClass
 
 def get_version():
     """ Find the version of this skill"""
-    version_file = os.path.join(os.path.dirname(__file__), 'version.py')
+    version_file = os.path.join(os.path.dirname(__file__), 'hivemind_voice_relay_led', 'version.py')
     major, minor, build, alpha = (None, None, None, None)
     with open(version_file) as f:
         for line in f:
