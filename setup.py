@@ -1,4 +1,7 @@
 from setuptools import setup, find_packages
+import os
+from os import walk, path
+from os.path import join, dirname
 
 def get_version():
     """ Find the version of this skill"""
