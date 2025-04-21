@@ -1,5 +1,5 @@
 from ..version import __version__
-from .listener import main
+from ..listener import main
 
 
 # De inhoud van __init__.py bepaalt hoe jouw package zich gedraagt
